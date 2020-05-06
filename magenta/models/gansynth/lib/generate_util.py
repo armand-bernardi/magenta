@@ -49,10 +49,10 @@ def load_midi(midi_path, min_pitch=36, max_pitch=84):
   return ns, notes
 
 
-def get_random_instruments(model, total_time, secs_per_instrument=2.0):
+def get_random_instruments(model, total_time, genz, secs_per_instrument=2.0):
   """Get random latent vectors evenly spaced in time."""
   n_instruments = int(total_time / secs_per_instrument)
-  z_instruments = model.generate_z(n_instruments)
+  z_instruments = model.generate_z_new(n_instruments, genz)
   t_instruments = np.linspace(-.0001, total_time, n_instruments)
   return z_instruments, t_instruments
 

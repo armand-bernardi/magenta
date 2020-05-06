@@ -190,7 +190,7 @@ class Model(object):
       config: (dict) All the global state.
     """
     data_helper = data_helpers.registry[config['data_type']](config)
-    real_images, real_one_hot_labels = data_helper.provide_data(batch_size)
+    real_images, real_one_hot_labels = data_helper.provide_data(batch_size, length=config['audio_length'])
 
     # gen_one_hot_labels = real_one_hot_labels
     gen_one_hot_labels = data_helper.provide_one_hot_labels(batch_size)
@@ -479,6 +479,9 @@ class Model(object):
 
   def generate_z(self, n):
     return np.random.normal(size=[n, self.config['latent_vector_size']])
+
+  def generate_z_new(self, n, genz):
+    return genz.generate_z_new(n, self.config['latent_vector_size'])
 
   def generate_samples(self, n_samples, pitch=None, max_audio_length=64000):
     """Generate random latent fake samples.

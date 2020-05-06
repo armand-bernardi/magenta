@@ -79,9 +79,8 @@ class NSynthTFRecordDataset(BaseDataset):
     one_hot_labels = tf.one_hot(indices, depth=len(pitches))
     return one_hot_labels
 
-  def provide_dataset(self):
+  def provide_dataset(self, length=64000):
     """Provides dataset (audio, labels) of nsynth."""
-    length = 64000
     channels = 1
 
     pitch_counts = self.get_pitch_counts()
@@ -113,13 +112,14 @@ class NSynthTFRecordDataset(BaseDataset):
 
     # Filter just acoustic instruments (as in the paper)
     # (0=acoustic, 1=electronic, 2=synthetic)
-    dataset = dataset.filter(lambda w, l, p, s: tf.equal(s, 0)[0])
+    # dataset = dataset.filter(lambda w, l, p, s: tf.equal(s, 1)[0]) # Not filtering.
     # Filter just pitches 24-84
     dataset = dataset.filter(lambda w, l, p, s: tf.greater_equal(p, 24)[0])
     dataset = dataset.filter(lambda w, l, p, s: tf.less_equal(p, 84)[0])
     dataset = dataset.map(lambda w, l, p, s: (w, l))
     return dataset
 
+	# ToDo: make dynamic
   def get_pitch_counts(self):
     pitch_counts = {
         24: 711,

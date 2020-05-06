@@ -15,14 +15,14 @@
 r"""Train a progressive GANSynth model.
 
 Example usage: (From base directory)
->>> python magenta/models/gansynth/train.py
+#>>> python magenta/models/gansynth/train.py
 
 To use a config of hyperparameters:
->>> python magenta/models/gansynth/train.py --config=mel_prog_hires
+#>>> python magenta/models/gansynth/train.py --config=mel_prog_hires
 
 To use a config of hyperparameters and manual hparams:
->>> python magenta/models/gansynth/train.py --config=mel_prog_hires \
->>> --hparams='{"train_data_path":"/path/to/nsynth-train.tfrecord"}'
+#>>> python magenta/models/gansynth/train.py --config=mel_prog_hires \
+#>>> --hparams='{"train_data_path":"/path/to/nsynth-train.tfrecord"}'
 
 List of hyperparameters can be found in model.py.
 Trains in a couple days on a single V100 GPU.
@@ -67,7 +67,7 @@ def init_data_normalizer(config):
   if config['task'] == 0:
     tf.reset_default_graph()
     data_helper = data_helpers.registry[config['data_type']](config)
-    real_images, _ = data_helper.provide_data(batch_size=10)
+    real_images, _ = data_helper.provide_data(batch_size=10, length=config['audio_length'])
 
     # Save normalizer.
     # Note if normalizer has been saved, save() is no-op. To regenerate the

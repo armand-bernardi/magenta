@@ -59,11 +59,11 @@ class DataHelper(object):
       with tf.device('/cpu:0'):
         return self.dataset.provide_one_hot_labels(batch_size=batch_size)
 
-  def provide_data(self, batch_size):
+  def provide_data(self, batch_size, length=64000):
     """Returns a batch of data and one-hot labels."""
     with tf.name_scope('inputs'):
       with tf.device('/cpu:0'):
-        dataset = self.dataset.provide_dataset()
+        dataset = self.dataset.provide_dataset(length=length)
         dataset = dataset.shuffle(buffer_size=1000)
         dataset = dataset.map(self._map_fn, num_parallel_calls=4)
         dataset = dataset.batch(batch_size)
@@ -113,7 +113,7 @@ class DataWaveHelper(DataSTFTHelper):
   """
 
   def make_specgrams_helper(self):
-    return SpecgramsHelper(audio_length=64000,
+    return SpecgramsHelper(audio_length=self._config['audio_length'],
                            spec_shape=(256, 512),
                            overlap=0.75,
                            sample_rate=self._config['sample_rate'],

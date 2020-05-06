@@ -63,8 +63,8 @@ class SpecgramsHelper(object):
     """Infer left and right padding for STFT."""
     n_samps_inv = self._nhop * (self._spec_shape[0] - 1) + self._nfft
     if n_samps_inv < self._audio_length:
-      raise ValueError('Wrong audio length. Number of ISTFT samples, %d, should'
-                       ' be less than audio lengeth %d' % self._audio_length)
+      raise ValueError('Wrong audio length. Number of ISTFT samples, %d, should not'
+                       ' be less than audio length %d' % (n_samps_inv, self._audio_length))
 
     # For Nsynth dataset, we are putting all padding in the front
     # This causes edge effects in the tail
